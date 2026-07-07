@@ -1,79 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+@import "./styles/reset.css";
+@import "./styles/header.css";
+@import "./styles/search.css";
+@import "./styles/book-card.css";
+@import "./styles/footer.css";
 
 :root {
-    --white: #ffffff;
-    --green: #27694d;
-    --yellow: #daa520;
-    --red: #ef4444;
-    --brown: #383129;
-    --black: #2a2622;
-    
-    --title: #2b2622;
-    --text: #7c736a;
-    --border: #E7E2DA;
+  --white: #ffffff;
+  --green: #27694d;
+  --yellow: #daa520;
+  --red: #ef4444;
+  --brown: #383129;
+  --black: #2a2622;
 
-    --background: #f7f4ef;
-    --card: #fcfaf7;
-    --secondary: #eeebe4;
-    --shadow: #c4b8a8;
-    --favorite: #eaf0ed;
+  --title: #2b2622;
+  --text: #7c736a;
+  --border: #E7E2DA;
+
+  --background: #f7f4ef;
+  --card: #fcfaf7;
+  --secondary: #eeebe4;
+  --shadow: #c4b8a8;
+  --favorite: #eaf0ed;
 }
 
-/* css reset */
 
-html {
-  box-sizing: border-box;
-  font-size: 16px;
+root {
+  font-size: 18px;
+  font-family: sans-serif;
 }
 
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+body {
+  background-color: var(--background);
+  padding: 5px;
 
-body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+  border: 2px solid rgb(255, 59, 59);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
   margin: 0;
-  padding: 0;
-  font-weight: normal;
+}
+main{
+  flex: 1;
 }
 
-ol, ul {
-  list-style: none;
+
+.books__list {
+  display: flex;
+  border: 1px crimson solid;
+  flex-wrap: wrap;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
 
-body{
-    background-color: #c4b8a8;
-}
 
-/* styles */
 
-root{
-    font-size: 18px;
-    font-family: sans-serif;
-}
 
-.header__icon{
-    width: 24px;
-    height: 24px;
-}
-.books__list{
-    display: flex;
-    border: 1px crimson solid;
-    flex-wrap: wrap;
-}
-.book-card{
-    background-color: var(--background);
-    border-radius: 10px;
-    padding: 5px;
-    margin: 10px;
-    min-width: 200px;
-    flex-grow: 1;
-}
-.book-card__image{
-    width: 200px;
-    z-index: 1;
-}

@@ -1,0 +1,17 @@
+.header {
+  border: 2px solid gray;
+  display: flex;
+  height: 4rem;
+  justify-content: left;
+  align-items: center;
+}
+
+.header__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.header__title-wrapper {
+  border: solid 1px maroon;
+
+}
