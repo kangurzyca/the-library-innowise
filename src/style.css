@@ -18,10 +18,62 @@
     --shadow: #c4b8a8;
     --favorite: #eaf0ed;
 }
+
+/* css reset */
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 body{
     background-color: #c4b8a8;
 }
+
+/* styles */
+
+root{
+    font-size: 18px;
+    font-family: sans-serif;
+}
+
 .header__icon{
     width: 24px;
     height: 24px;
+}
+.books__list{
+    display: flex;
+    border: 1px crimson solid;
+    flex-wrap: wrap;
+}
+.book-card{
+    background-color: var(--background);
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px;
+    min-width: 200px;
+    flex-grow: 1;
+}
+.book-card__image{
+    width: 200px;
+    z-index: 1;
 }
