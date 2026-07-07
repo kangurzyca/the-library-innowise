@@ -1,13 +1,68 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>the-library-innowise</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="./src/style.css" rel="stylesheet" />
+  <title>the library</title>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header__content">
+      <img class="header__icon" src="./src/assets/book.svg" alt="book icon">
+      <h1 class="header__title">The Library</h1>
+      <p class="header__subtitle">Discover your next favorite book</p>
+    </div>
+  </header>
+  <main>
+    <section class="search">
+      <h2 class="search__title">Discover Your Next Great Read</h2>
+      <p class="search__description">Search millions of books, build your personal library, and never lose track of what
+        to read next.</p>
+      <div class="search__form">
+        <img class="search__icon" src="./src/assets/search.svg" alt="magnifying glass icon">
+        <input class="search__input" type="text" placeholder="Search for books by title or author...">
+        <button class="search__button" type="button">Search</button>
+      </div>
+
+    </section>
+    <section class="books">
+      <!-- book cards to be fetched and displayed-->
+      <ul class="books__list">
+        <li class="book-card">
+          <img class="book-card__faveIcon" src="./src/assets/heart.svg" alt="heart icon">
+          <p class="book-card__image">an image</p>
+          <h3 class="book-card__title">the title</h3>
+          <p class="book-card__author">the author</p>
+          <p class="book-card__date">the date</p>
+        </li>
+      </ul>
+      <p class="books books--empty">no books found</p>
+    </section>
+    <aside class="sidebar">
+      <div class="sidebar__content">
+        <p class="sidebar__icon">an icon</p>
+        <h2 class="sidebar__title">Favourites</h2>
+        <p class="sidebar__counter">3 bookes saved</p>
+      </div>
+      <ul class="sidebar__list">
+        <li class="book-card book-card--small">
+          <p class="book-card__favorite-icon">an icon</p>
+          <p class="book-card__image">an image</p>
+          <h3 class="book-card__title">the title</h3>
+          <p class="book-card__author">the author</p>
+          <p class="book-card__date">the date</p>
+        </li>
+      </ul>
+    </aside>
+
+  </main>
+  <footer class="footer">
+    <p class="footer__text">Powered by <a class="footer__link" href="#">Open Library</a></p>
+  </footer>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
