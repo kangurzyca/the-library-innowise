@@ -20,3 +20,38 @@
 .book-card__title{
   word-wrap: normal;
 }
+.book-card__fave-button{
+  background-color: #00000000;
+ border: none;
+  padding: 0;
+  margin: 0;
+  outline: unset;
+  display: inline-flex;
+    align-items: center;
+  justify-content: center;
+  transition: all ease 0.2s;
+  position: relative;
+  width: 30px;
+  height: 30px;
+
+}
+.book-card__fave-button:hover {
+  cursor: pointer;
+  scale: 1.2;
+
+}
+.book-card__icon{
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  border-radius: 50%;
+  pointer-events: none
+}
+.book-card__fave-button:hover .book-card__icon{
+ 
+  filter: brightness(70%) saturate(7000%);
+
+}
+.book-card__icon--faved{
+  filter: brightness(70%) saturate(7000%);
+}

@@ -51,13 +51,19 @@ function createBooksCards(booksArray, size) {
       : `https://covers.openlibrary.org/b/id/${el.cover_i}.jpg`;
     const author = size ? el.author : el.author_name.join(", ");
 
+    const favedClass = ".book-card__icon--faved"
+
     booksList.innerHTML += `
        <li class="book-card"
        data-title="${el.title}" 
        data-author="${author}"
        data-first_publish_year="${el.first_publish_year}"
        data-coverurl="https://covers.openlibrary.org/b/id/${el.cover_i}.jpg">
+        <button class="book-card__fave-button">
+
           <img class="book-card__icon" src="./src/assets/heart.svg" alt="heart icon">
+        </button>
+
           <img class="book-card__image" src="${coverurl}">
           <h3 class="book-card__title">${el.title}</h3>
           <p class="book-card__author">${author}</p>
@@ -66,7 +72,7 @@ function createBooksCards(booksArray, size) {
     `; // template literal ends here!
   });
   booksList
-    .querySelectorAll(".book-card__icon")
+    .querySelectorAll(".book-card__fave-button")
     .forEach((el) => el.addEventListener("click", (e) => faveTheBook(e)));
 }
 function faveTheBook(e) {
@@ -74,6 +80,7 @@ function faveTheBook(e) {
 
   let myFavedBooks = readFavedBooks();
   localStorage.removeItem(itemName);
+  console.log("my books: ", myFavedBooks);
 
   const newFavedBook = {
     title: e.target.parentElement.dataset.title,
@@ -81,16 +88,19 @@ function faveTheBook(e) {
     first_publish_year: e.target.parentElement.dataset.first_publish_year,
     coverurl: e.target.parentElement.dataset.coverurl,
   };
-
-  const isAlreadyStored = myFavedBooks.findIndex(
-    (book) =>
+  const isAlreadyStored = myFavedBooks.findIndex((book) => {
+    console.log("comparing faves");
+    return (
       book.title === newFavedBook.title &&
       book.author === newFavedBook.author &&
-      book.first_publish_year === newFavedBook.first_publish_year,
-  );
+      book.first_publish_year === newFavedBook.first_publish_year
+    );
+  });
+  console.log(isAlreadyStored);
+
   if (isAlreadyStored !== -1) {
     console.log("unfaving");
-    myFavedBooks.splice(isAlreadyStored);
+    myFavedBooks.splice(isAlreadyStored, 1);
   } else {
     myFavedBooks.push(newFavedBook);
   }
