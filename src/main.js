@@ -87,6 +87,11 @@ function createBooksCards(booksArray, size) {
     })
   })
 
+  // for main books list adding filtering buttons
+ if(!size){
+  createAuthorFilters(booksList.querySelectorAll("li"))
+ }
+
 }
 function faveTheBook(e) {
   // get faved books from localStorage
@@ -147,3 +152,32 @@ function setLoading(isLoading) {
 
 //to filter by author lets gather all displayed authors and create buttons with their names
 // once button is clicked all book-cards are hidden except those that realte to the clicked button
+function createAuthorFilters(hmtlCollectionArg) {
+  //make an array from querySelectorAll output
+  const booksArray = Array.from(hmtlCollectionArg);
+  //return if empty or undefined
+  if (!booksArray || booksArray.length === 0) {
+    console.log("no filters created due to no books available");
+    return;
+  }
+  //go over booksArray and push an author to authorsArray
+  const authorsArray = booksArray.map((book) => {
+    return book.dataset.author;
+  });
+  console.log(authorsArray);
+  //get filters block
+  const filtersBlock = document.querySelector(".books__filters");
+  //create buttons with author names
+  const buttonsArray = authorsArray.map((author) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.classList.add("filters__author-filter");
+    button.value = author;
+    button.textContent = author;
+    button.addEventListener("click", (e) => {
+      //temporary callback
+      console.log(e.target.value);
+    });
+    filtersBlock.appendChild(button);
+  });
+}
