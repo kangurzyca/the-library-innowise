@@ -23,6 +23,14 @@
   border: none;
   border-radius: 6px;
 }
+.search__button:hover{
+  cursor: pointer;
+}
+.search__button:disabled{
+  filter: saturate(30%);
+  opacity: 0.5;
+  pointer-events: none;
+}
 .search__form{
     border: 1px green solid;
 }

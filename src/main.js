@@ -1,43 +1,81 @@
+// selecting the seartch button
 const btnSearch = document.querySelector(".search__button");
 btnSearch.addEventListener("click", handleSearchBar);
 
-const loader = document.getElementById("list__loader");
-const itemName = "theLibraryMyFavedBooks";
+// declaring debounce variable for on-the-fly search
+let debounceTimeout;
 
+//selectind search bar input field and making it input sensitive to lock search button in case of no input
+//openLIbrary lock request for searches shorter than three characters
+const searchBar = document.querySelector(".search__input");
+searchBar.addEventListener("input", (e) => {
+ 
+  if (e.target.value.length > 2) {
+    btnSearch.disabled = false;
+  } else{
+    btnSearch.disabled = true;
+  }
+  // added debouncer
+ clearTimeout(debounceTimeout);
+ debounceTimeout = setTimeout(() => {
+   handleSearchBar();
+ }, 300);
+});
+
+// getting a placeholder pargraph that serves as a state broadcaster
+const booksMessage = document.getElementById("books__message");
+const itemName = "theLibraryMyFavedBooks";
 
 //display faves in a sidebar if they exist
 createBooksCards(readFavedBooks(), "small");
 
-async function handleSearchBar(e) {
-  const searchBar = document.querySelector(".search__input");
-  if (!searchBar.value) {
-    console.log("provide search phrase");
-    throw new Error("no search phrase provided", { cause: err });
-  }
-  const query = searchBar.value.replaceAll(" ", "%20");
-  const url = `https://openlibrary.org/search.json?q=${query}&limit=8`;
-  const headers = new Headers({
-    "User-Agent": "TheLibrary/0.1",
-  });
-  const options = {
-    method: "GET",
-    headers: headers,
-  };
-
+async function handleSearchBar() {
   setLoading(true);
-  fetch(url, options)
-    .then((response) => response.json())
-    .then((data) => {
-      createBooksCards(data.docs);
-      setLoading(false);
-    })
-    .catch((error) => console.error("Error:", error));
+  try {
+    
+    if (!searchBar.value) {
+      throw new Error("No search phrase provided.");
+    }
+    const query = searchBar.value.replaceAll(" ", "%20"); // this unnecessary, openLibrary accepts something simpler, check it.
+    const url = `https://openlibrary.org/search.json?q=${query}&limit=8`;
+    const headers = new Headers({
+      "User-Agent": "TheLibrary/0.1",
+    });
+    const options = {
+      method: "GET",
+      headers: headers,
+    };
+    
+    const response = await fetch(url, options);
+    if (!response.ok) {
+    setLoading(false, "network")
+    throw new Error("Request failed due to network error");
+}
+    const data = await response.json();
+
+    //remove filters created during previous search
+    document.querySelectorAll(".filters__author-filter").forEach((el) => el.remove());
+
+    if (data.docs.length === 0) {
+      setLoading(false, "no books")
+      return
+    }
+    //create book-cards
+    createBooksCards(data.docs);
+    setLoading(false);
+   
+  } catch (error) {
+    setLoading(false);
+    console.error("error fetching data", error);
+  } finally {
+    
+  }
 }
 
 function createBooksCards(booksArray, size) {
-  // if (!booksArray || booksArray.length === 0) {
-  //   throw new Error("no books found", { cause: err });
-  // }
+  if (!booksArray || booksArray.length === 0) {
+    throw new Error("no books found");
+  }
 
   let booksList = null;
   if (size && size === "small") {
@@ -49,10 +87,59 @@ function createBooksCards(booksArray, size) {
   booksList.innerHTML = `<li>loading books</li>`;
   booksList.innerHTML = ``;
   const bookCards = booksArray.map((el) => {
-    const coverurl = size
-      ? el.coverurl
-      : `https://covers.openlibrary.org/b/id/${el.cover_i}.jpg`;
-    const author = size ? el.author : el.author_name.join(", ");
+
+    // checking for data pieces to be falsey
+    // asdfasdf - returns a book with no author and breaks .join() below
+    let coverurl = null
+    let author = null
+    let title = null
+    let first_publish_year = null
+    if (size) {
+      if (el.coverurl) {
+        coverurl = el.coverurl;
+      } else {
+        coverurl = "no URL";
+      }
+      if (el.author) {
+        author = el.author;
+      } else {
+        author = "no author";
+      }
+      if (el.title) {
+        title = el.title;
+      } else {
+        title = "no title";
+      }
+      if (el.first_publish_year) {
+        first_publish_year = el.first_publish_year;
+      } else {
+        first_publish_year = "no year";
+      }
+    } else {
+      if (el.cover_i) {
+        coverurl = `https://covers.openlibrary.org/b/id/${el.cover_i}.jpg`;
+      } else {
+        coverurl = "no URL";
+      }
+      if (el.author_name) {
+        author = el.author_name.join(", ");
+      } else {
+        author = "no author";
+      }
+      if (el.title) {
+        title = el.title;
+      } else {
+        title = "no title";
+      }
+      if (el.first_publish_year) {
+        first_publish_year = el.first_publish_year;
+      } else {
+        first_publish_year = "no year";
+      }
+    }
+    
+    
+
 
     const favedClass = size ? "book-card__icon--faved" : ""
 
@@ -139,35 +226,44 @@ function readFavedBooks() {
 }
 
 // laoding state function
-function setLoading(isLoading) {
+function setLoading(isLoading, type) {
   if (isLoading) {
     //delete current booksList if a new search is called
     document.querySelector(".books__list").innerHTML = "";
-    //show a loader message
-    loader.style.display = "block";
-  } else if (!isLoading) {
+    //show a booksMessage message
+    booksMessage.style.display = "block";
+    booksMessage.textContent = "Loading books, please wait."
+    btnSearch.disabled = true;
+  } else if (!isLoading && !type) {
     //hide loading message
-    loader.style.display = "none";
+    booksMessage.style.display = "none";
+    btnSearch.disabled = false;
+  }else if (!isLoading && type === "no books") {
+        booksMessage.style.display = "block";
+        booksMessage.textContent = "No books found, try searching for something else."
+        btnSearch.disabled = false;
+  }else if (!isLoading && type === "network") {
+        booksMessage.style.display = "block";
+        booksMessage.textContent = "Search failed due to network error, please try again."
+        btnSearch.disabled = false;
   }
 }
 
 //to filter by author lets gather all displayed authors and create buttons with their names
 // once button is clicked all book-cards are hidden except those that realte to the clicked button
 function createAuthorFilters(hmtlCollectionArg) {
-  //make an array from querySelectorAll output
-  const booksArray = Array.from(hmtlCollectionArg);
-  //return if empty or undefined
-  if (!booksArray || booksArray.length === 0) {
+   //return if empty or undefined
+  if (!hmtlCollectionArg || Array.from(hmtlCollectionArg).length === 0) {
     console.log("no filters created due to no books available");
     return;
   }
+  //make an array from querySelectorAll output
+  const booksArray = Array.from(hmtlCollectionArg);
+ 
 
   //get filters block
   const filtersBlock = document.querySelector(".books__filters");
-  //remove filters created during previous search
-  filtersBlock
-    .querySelectorAll(".filters__author-filter")
-    .forEach((el) => el.remove());
+ 
 
   //go over booksArray and push an author to authorsArray
   let authorsArray = booksArray.map((book, index, array) => {
