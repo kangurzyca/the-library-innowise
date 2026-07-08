@@ -19,6 +19,11 @@
 }
 .book-card__title{
   word-wrap: normal;
+  color: var(--title);
+}
+.book-card__author,
+.book-card__year{
+  color: var(--text);
 }
 .book-card__fave-button{
   background-color: #00000000;
@@ -60,12 +65,10 @@
 }
 .filters__author-filter{
   background-color: var(--secondary);
-  border: none;
-  padding: .5em 1.245em;
+ color: var(--title);
   margin: 5px;
-  border-radius: 6px;
 }
 .filters__author-filter--selected{
   background-color: var(--green);
-  color: var(--secondary)
+  color: var(--white);
 }

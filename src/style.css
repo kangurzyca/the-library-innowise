@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 @import "./styles/reset.css";
+@import "./styles/button.css";
 @import "./styles/header.css";
 @import "./styles/search.css";
 @import "./styles/book-card.css";
@@ -25,6 +26,25 @@
 }
 
 
+.theme-dark{
+  --green: hsl(155, 46%, 40%);
+  --brown: hsl(32, 15%, 81%);
+
+
+ --title: hsl(27, 12%, 85%);
+  --text: hsl(30, 8%, 65%);
+  --border: hsl(37, 21%, 12%);
+
+  --background: hsl(38, 33%, 20%);
+  --card: hsl(36, 45%, 18%);
+  --secondary: hsl(42, 23%, 19%);
+  --shadow: hsl(34, 19%, 29%);
+  --favorite: hsl(150, 17%, 17%);
+
+  
+  
+}
+
 root {
   font-size: 18px;
   font-family: sans-serif;
@@ -32,6 +52,7 @@ root {
 
 body {
   background-color: var(--background);
+  color: var(--title);
   padding: 5px;
   font-family: 'Source Sans 3', sans-serif;
   font-weight: 400;
@@ -41,6 +62,7 @@ body {
   min-height: 100vh; 
   margin: 0;
   position: relative;
+  transition: 0.2s ease all;
 }
 main{
   flex: 1;
@@ -58,24 +80,6 @@ h1, h2, h3, h4 {
 }
 .books__message{
   display: none;
-}
-.message{
-  display: none;
-  width: 300px;
-  height: 200px;
-  background-color: var(--white);
-  border-radius: 10px;
-  opacity: 0.95;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 200px;
-  left: 200px;
-  border: 2px solid var(--red)
-}
-.message__text{
-  color: var(--red)
 }
 
 

@@ -10,8 +10,27 @@
   width: 24px;
   height: 24px;
 }
-
+.header__title{
+  color: var(--title);
+}
+.header__subtitle{
+  color: var(--text);
+}
 .header__title-wrapper {
   border: solid 1px maroon;
 
+}
+.header__theme-button{
+  padding: .25em 1.25em;
+  margin-left: auto;
+  margin-right: 10px;
+  border: none;
+  background-color: var(--brown);
+  color: var(--secondary);
+  border-radius: 10px;
+
+}
+.header__theme-button:hover{
+  cursor: pointer;
+  filter: brightness(130%) contrast(80%);
 }

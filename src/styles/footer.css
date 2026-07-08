@@ -1,7 +1,12 @@
 .footer {
   border: 2px solid gainsboro;
-  height: 100px;
+  height: 4rem;
 display: flex;
 align-items: center;
 justify-content: center;
+color: var(--text);
+}
+.footer__link{
+  text-decoration: none;
+  color: var(--green)
 }

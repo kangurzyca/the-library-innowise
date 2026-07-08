@@ -1,0 +1,8 @@
+.button {
+  background-color: var(--green);
+  padding: .3em 1.5em;
+  outline: none;
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+}
