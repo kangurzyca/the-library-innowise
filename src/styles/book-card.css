@@ -55,3 +55,17 @@
 .book-card__icon--faved{
   filter: brightness(70%) saturate(7000%);
 }
+.book-card--hidden{
+  display: none;
+}
+.filters__author-filter{
+  background-color: var(--secondary);
+  border: none;
+  padding: .5em 1.245em;
+  margin: 5px;
+  border-radius: 6px;
+}
+.filters__author-filter--selected{
+  background-color: var(--green);
+  color: var(--secondary)
+}

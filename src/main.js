@@ -4,6 +4,7 @@ btnSearch.addEventListener("click", handleSearchBar);
 const loader = document.getElementById("list__loader");
 const itemName = "theLibraryMyFavedBooks";
 
+
 //display faves in a sidebar if they exist
 createBooksCards(readFavedBooks(), "small");
 
@@ -160,23 +161,86 @@ function createAuthorFilters(hmtlCollectionArg) {
     console.log("no filters created due to no books available");
     return;
   }
-  //go over booksArray and push an author to authorsArray
-  const authorsArray = booksArray.map((book) => {
-    return book.dataset.author;
-  });
-  console.log(authorsArray);
+
   //get filters block
   const filtersBlock = document.querySelector(".books__filters");
+  //remove filters created during previous search
+  filtersBlock
+    .querySelectorAll(".filters__author-filter")
+    .forEach((el) => el.remove());
+
+  //go over booksArray and push an author to authorsArray
+  let authorsArray = booksArray.map((book, index, array) => {
+    //check for duplicates in original array by finding a first index of author occurance
+    //if the found index is not the same as index of an author currently mapped over then it is a duplicate
+    const isDuplicate =
+      array.findIndex((el) => el.dataset.author === book.dataset.author) !==
+      index;
+    if (isDuplicate) {
+      return;
+    }
+    return book.dataset.author;
+  });
+  //removing undefined created by early return from map()
+  //using Boolean() function to differnetiate valid strings from falsey values => undefined's
+  authorsArray = authorsArray.filter(Boolean);
+
+  //filtering only one author doesn't make sense => early return
+  if (authorsArray.length < 2) {
+    return;
+  }
+
   //create buttons with author names
-  const buttonsArray = authorsArray.map((author) => {
+  const buttonsArray = authorsArray.map(author => {
+    
     const button = document.createElement("button");
     button.type = "button";
     button.classList.add("filters__author-filter");
     button.value = author;
     button.textContent = author;
+    button.dataset.selected = "false";
+
+    // adding an EvenListener to the button
     button.addEventListener("click", (e) => {
-      //temporary callback
-      console.log(e.target.value);
+      //getting all book from a booklist omitting getting the sidebar book-cards
+      const allOtherBooks = document.querySelectorAll(
+        `.books__list .book-card`,
+      );
+      allOtherBooks.forEach((el) => el.classList.add("book-card--hidden"));
+
+      //having target value I can select all list items with this value within dataset
+      const matchedBooks = document.querySelectorAll(
+        `[data-author="${e.target.value}"]`,
+      );
+
+      // changing button selected state
+      if (e.target.dataset.selected === "false") {
+        e.target.dataset.selected = "true";
+        e.target.classList.add("filters__author-filter--selected");
+      } else if (e.target.dataset.selected === "true") {
+        e.target.dataset.selected = "false";
+        e.target.classList.remove("filters__author-filter--selected");
+      }
+
+      // every time I click a button I have to check which buttons are selected.
+      const selectedButtons = Array.from(
+        document.querySelectorAll("[data-selected='true']"),
+      ).map((el) => el.value);
+      
+      //when no filters are selected then display all books
+      if(selectedButtons.length === 0){
+        allOtherBooks.forEach((el) => el.classList.remove("book-card--hidden"))
+      }
+
+      // having a list of selected authors I can hide all books that are not on the list
+      // iterating over two arrays
+      selectedButtons.forEach((btn) => {
+        allOtherBooks.forEach((book) => {
+          if (btn === book.dataset.author) {
+            book.classList.remove("book-card--hidden");
+          }
+        });
+      });
     });
     filtersBlock.appendChild(button);
   });
