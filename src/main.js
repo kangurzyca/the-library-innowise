@@ -89,10 +89,13 @@ function createBooksCards(booksArray, size) {
   }
 
   let booksList = null;
+  let bookCardClass = null;
   if (size && size === "small") {
     booksList = document.querySelector(".sidebar__list");
+    bookCardClass = "book-card book-card--small";
   } else {
     booksList = document.querySelector(".books__list");
+    bookCardClass = "book-card";
   }
 
   booksList.innerHTML = `<li>loading books</li>`;
@@ -151,18 +154,20 @@ function createBooksCards(booksArray, size) {
     const favedClass = size ? "book-card__icon--faved" : "";
 
     booksList.innerHTML += `
-       <li class="book-card"
+       <li class="${bookCardClass}"
        data-title="${el.title}" 
        data-author="${author}"
        data-first_publish_year="${el.first_publish_year}"
        data-coverurl="https://covers.openlibrary.org/b/id/${el.cover_i}.jpg">
+          <img class="book-card__image" src="${coverurl}">
+          <div class="book-card__text-wrapper">
+            <h3 class="book-card__title">${el.title}</h3>
+            <p class="book-card__author">${author}</p>
+            <p class="book-card__year">${el.first_publish_year}</p>
+          </div>
           <button class="book-card__fave-button">
             <img class="book-card__icon ${favedClass}" src="./src/assets/heart.svg" alt="heart icon">
           </button>
-          <img class="book-card__image" src="${coverurl}">
-          <h3 class="book-card__title">${el.title}</h3>
-          <p class="book-card__author">${author}</p>
-          <p class="book-card__year">${el.first_publish_year}</p>
         </li>
     `; // template literal ends here!
   });
@@ -192,6 +197,7 @@ function createBooksCards(booksArray, size) {
   if (!size) {
     createAuthorFilters(booksList.querySelectorAll("li"));
   }
+  //set height of sidebar
 }
 function faveTheBook(e) {
   // get faved books from localStorage
@@ -234,6 +240,7 @@ function readFavedBooks() {
   if (localStorage.getItem(itemName)) {
     myFavedBooks = [...JSON.parse(localStorage.getItem(itemName))];
   }
+  countFavorites(myFavedBooks)
   return myFavedBooks;
 }
 
@@ -351,4 +358,13 @@ function createAuthorFilters(hmtlCollectionArg) {
     });
     filtersBlock.appendChild(button);
   });
+}
+function countFavorites(array){
+  const counter = document.querySelector(".subtitle__counter")
+    
+    if(array.length === 0){
+      counter.textContent = "No"
+    }else{
+     counter.textContent = array.length.toString()
+    }
 }

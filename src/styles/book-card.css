@@ -1,74 +1,86 @@
 .book-card {
   background-color: var(--card);
   border-radius: 10px;
-  padding: 5px;
+  padding: 0;
   margin: 10px;
   min-width: 170px;
-
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .book-card__image {
-  width: 90%;
+  width: 100%;
   height: 280px;
   object-fit: cover;
   z-index: 1;
 }
 
-.sidebar__list .book-card{
-  border: 2px green solid;
-}
-.book-card__title{
+.book-card__title {
   word-wrap: normal;
   color: var(--title);
 }
+
 .book-card__author,
-.book-card__year{
+.book-card__year {
   color: var(--text);
 }
-.book-card__fave-button{
-  background-color: #00000000;
- border: none;
-  padding: 0;
+
+.book-card__fave-button {
+  background-color: #ffffffd0;
+  border: none;
+  border-radius: 50%;
+  padding: 5px;
   margin: 0;
   outline: unset;
   display: inline-flex;
-    align-items: center;
+  align-items: center;
   justify-content: center;
   transition: all ease 0.2s;
   position: relative;
-  width: 30px;
-  height: 30px;
-
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  top: 3%;
+  right: 5%;
 }
+
 .book-card__fave-button:hover {
   cursor: pointer;
   scale: 1.2;
 
 }
-.book-card__icon{
+
+.book-card__icon {
   width: 30px;
   height: 30px;
   opacity: 1;
   border-radius: 50%;
   pointer-events: none
 }
-.book-card__fave-button:hover .book-card__icon{
- 
+
+.book-card__fave-button:hover .book-card__icon {
+
   filter: brightness(70%) saturate(7000%);
 
 }
-.book-card__icon--faved{
+
+.book-card__icon--faved {
   filter: brightness(70%) saturate(7000%);
 }
-.book-card--hidden{
+
+.book-card--hidden {
   display: none;
 }
-.filters__author-filter{
+
+
+.filters__author-filter {
   background-color: var(--secondary);
- color: var(--title);
+  color: var(--title);
   margin: 5px;
 }
-.filters__author-filter--selected{
+
+.filters__author-filter--selected {
   background-color: var(--green);
   color: var(--white);
 }

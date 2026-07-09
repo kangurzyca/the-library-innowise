@@ -3,7 +3,9 @@
 @import "./styles/button.css";
 @import "./styles/header.css";
 @import "./styles/search.css";
+@import "./styles/books.css";
 @import "./styles/book-card.css";
+@import "./styles/sidebar.css";
 @import "./styles/footer.css";
 
 :root {
@@ -23,13 +25,17 @@
   --secondary: #eeebe4;
   --shadow: #c4b8a8;
   --favorite: #eaf0ed;
+
+  --mint: hsla(160, 45%, 87%, 0.925);
+
 }
 
 
 .theme-dark{
-  --green: hsl(155, 46%, 40%);
-  --brown: hsl(32, 15%, 81%);
+  --green: hsla(160, 45%, 87%, 0.925);
+  --mint: #27694d;
 
+  --brown: hsl(32, 15%, 81%);
 
  --title: hsl(27, 12%, 85%);
   --text: hsl(30, 8%, 65%);
@@ -73,51 +79,7 @@ h1, h2, h3, h4 {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
 }
-.sidebar{
- 
-  border: 2px magenta solid;
-  margin: 5px;
-  border-radius: 20px;
- 
-}
-.sidebar__list{
-  border: 3px solid rgb(219, 197, 0);
-  border-radius: 20px;
-  margin: 5px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-}
 
-.books{
-  flex: 1;
-  border: 2px solid rgb(255, 187, 0);
-  border-radius: 20px;
-
-}
-.books__list {
-  display: grid;
-  border: 2px rgb(43, 220, 20) solid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  border-radius: 20px;
-
-}
-.books__message{
-  display: block;
-  text-align:center;
-  margin: 50px 0;
-  font-size: 2rem;
-  color: var(--text);
-  font-weight: 200;
-}
-.content{
-  display: flex;
-  flex-direction: column;
-  border: 2px solid blue;
-  position: relative;
-}
-.content--empty{
-  border: 2px solid var(--brown);
-}
 @media (min-width:800px) {
   .content {
     flex-direction: row;
@@ -125,9 +87,9 @@ h1, h2, h3, h4 {
   }
 
   .sidebar {
-    max-width: 250px;
+   width: 350px;
     align-self: flex-start;
-    max-height: 70vh;  
+    max-height: 65vh;
     overflow-y: scroll;
   }
 }
