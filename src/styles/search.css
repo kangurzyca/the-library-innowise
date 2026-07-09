@@ -1,8 +1,9 @@
 .search {
-  max-width: 500px;
+  max-width: 600px;
   margin: 30px auto;
   text-align: center;
-  border: 1px solid rgb(135, 185, 185);
+  border: 2px solid rgb(135, 185, 185);
+  border-radius: 10px;
 }
 .search__title{
   font-size: 2.25rem;
@@ -16,9 +17,17 @@
 
 }
 .search__input {
-  padding: 1em 1.5em;
+  flex: 1;
+  padding: .5em 0 .5em 2.5em;
   background-color: var(--card);
-  color: var(--title)
+  color: var(--title);
+  font-size: 1.2rem;
+  border-radius: 10px;
+  margin-right: 10px;
+  border: 2px solid var(--border);
+  min-width: 200px;
+  position: relative;
+  left: -18px;
 }
 
 .search__button {
@@ -39,5 +48,18 @@
   pointer-events: none;
 }
 .search__form{
-    border: 1px green solid;
+    border: 3px rgb(58, 235, 58) solid;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+.search__icon{
+  position: relative;
+  left: 15px;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  z-index: 1;
 }
