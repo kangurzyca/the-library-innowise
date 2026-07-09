@@ -253,7 +253,6 @@ function faveTheBook(e) {
         book.dataset.author === newFavedBook.author &&
         book.dataset.first_publish_year === newFavedBook.first_publish_year
       ) {
-        console.log(book);
         book
           .querySelector(".book-card__icon")
           .classList.remove("book-card__icon--faved");
