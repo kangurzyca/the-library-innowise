@@ -47,7 +47,7 @@ async function handleSearchBar() {
       throw new Error("No search phrase provided.");
     }
     const query = searchBar.value.replaceAll(" ", "%20"); // this unnecessary, openLibrary accepts something simpler, check it.
-    const url = `https://openlibrary.org/search.json?q=${query}&limit=8`;
+    const url = `https://openlibrary.org/search.json?q=${query}&limit=15`;
     const headers = new Headers({
       "User-Agent": "TheLibrary/0.1",
     });

@@ -69,7 +69,7 @@ body {
   min-width: 400px;
   position: relative;
   transition: 0.2s ease all;
-  max-width: 1200px;
+  max-width: 1400px;
 }
 main{
   flex: 1;
@@ -83,13 +83,16 @@ h1, h2, h3, h4 {
   .content {
     flex-direction: row;
     align-items: flex-start;
+   position: relative;
   }
 
   .sidebar {
    width: 350px;
     align-self: flex-start;
-    max-height: 65vh;
     overflow-y: scroll;
+    position: sticky;
+    top: 10px;
+    height: 70vh;
   }
 }
 
