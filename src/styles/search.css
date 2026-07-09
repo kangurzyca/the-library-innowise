@@ -2,7 +2,6 @@
   max-width: 600px;
   margin: 30px auto;
   text-align: center;
-  border: 2px solid rgb(135, 185, 185);
   border-radius: 10px;
 }
 .search__title{
@@ -48,7 +47,6 @@
   pointer-events: none;
 }
 .search__form{
-    border: 3px rgb(58, 235, 58) solid;
     display: flex;
     align-items: center;
     position: relative;
@@ -62,4 +60,5 @@
   min-width: 20px;
   min-height: 20px;
   z-index: 1;
+  color: var(--text);
 }

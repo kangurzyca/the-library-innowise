@@ -22,9 +22,6 @@
 .sidebar__icon {
     width: 40px;
     height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background: var(--mint);
     color: var(--green);
     border-radius: 12px;

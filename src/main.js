@@ -152,6 +152,7 @@ function createBooksCards(booksArray, size) {
     }
 
     const favedClass = size ? "book-card__icon--faved" : "";
+          // <img class="book-card__icon ${favedClass}" src="./src/assets/heart.svg" alt="heart icon">
 
     booksList.innerHTML += `
        <li class="${bookCardClass}"
@@ -166,7 +167,9 @@ function createBooksCards(booksArray, size) {
             <p class="book-card__year">${el.first_publish_year}</p>
           </div>
           <button class="book-card__fave-button">
-            <img class="book-card__icon ${favedClass}" src="./src/assets/heart.svg" alt="heart icon">
+            <svg class="book-card__icon ${favedClass}" viewBox="-1 -1 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.6667 9.33333C13.66 8.36 14.6667 7.19333 14.6667 5.66667C14.6667 4.69421 14.2804 3.76158 13.5928 3.07394C12.9051 2.38631 11.9725 2 11 2C9.82671 2 9.00004 2.33333 8.00004 3.33333C7.00004 2.33333 6.17337 2 5.00004 2C4.02758 2 3.09495 2.38631 2.40732 3.07394C1.71968 3.76158 1.33337 4.69421 1.33337 5.66667C1.33337 7.2 2.33337 8.36667 3.33337 9.33333L8.00004 14L12.6667 9.33333Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </button>
         </li>
     `; // template literal ends here!
@@ -224,10 +227,10 @@ function faveTheBook(e) {
   //deciding whether to fave or not basing on findIndex return value => -1 if not found or actuall item index
   if (isAlreadyStored !== -1) {
     myFavedBooks.splice(isAlreadyStored, 1);
-    e.target.querySelector("img").classList.remove("book-card__icon--faved");
+    e.target.querySelector(".book-card__icon").classList.remove("book-card__icon--faved");
   } else {
     myFavedBooks.push(newFavedBook);
-    e.target.querySelector("img").classList.add("book-card__icon--faved");
+    e.target.querySelector(".book-card__icon").classList.add("book-card__icon--faved");
   }
   //setting updated item in localStorage
   localStorage.setItem(itemName, JSON.stringify(myFavedBooks));
