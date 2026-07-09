@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="./src/style.css" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="./src/assets/book.svg">
+  <link rel="shortcut icon" href="#"> <!-- to stop favicon error from console logging-->
   <title>the library</title>
 </head>
 
@@ -28,24 +30,26 @@
         <button class="search__button button" type="button" disabled>Search</button>
       </div>
     </section>
-    <section class="books">
-      <nav class="books__filters"></nav>
-      <p class="books__message" id="books__message"></p>
-      <ul class="books__list">
-      </ul>
-    </section>
-    <aside class="sidebar">
-      <div class="sidebar__content">
-        <p class="sidebar__icon">an icon</p>
-        <h2 class="sidebar__title">Favourites</h2>
-        <p class="sidebar__counter">3 bookes saved</p>
-      </div>
-      <ul class="sidebar__list">
-      </ul>
-    </aside>
+    <div class="content">
+      <section class="books">
+        <nav class="books__filters"></nav>
+        <p class="books__message" id="books__message">What books are on your mind today?</p>
+        <ul class="books__list">
+        </ul>
+      </section>
+      <aside class="sidebar">
+        <div class="sidebar__content">
+          <p class="sidebar__icon">an icon</p>
+          <h2 class="sidebar__title">Favourites</h2>
+          <p class="sidebar__counter">3 books saved</p>
+        </div>
+        <ul class="sidebar__list">
+        </ul>
+      </aside>
+    </div>
   </main>
   <footer class="footer">
-    <p class="footer__text">Powered by <a class="footer__link" href="#">Open Library</a></p>
+    <p class="footer__text">Powered by <a class="footer__link" href="https://openlibrary.org/">Open Library</a></p>
   </footer>
   <script type="module" src="/src/main.js"></script>
 </body>

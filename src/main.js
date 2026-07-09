@@ -90,7 +90,7 @@ function createBooksCards(booksArray, size) {
 
   let booksList = null;
   if (size && size === "small") {
-    booksList = document.querySelector(".sidebar");
+    booksList = document.querySelector(".sidebar__list");
   } else {
     booksList = document.querySelector(".books__list");
   }

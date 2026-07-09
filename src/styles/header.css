@@ -1,9 +1,9 @@
 .header {
-  border: 2px solid gray;
   display: flex;
   height: 4rem;
   justify-content: left;
   align-items: center;
+  border-bottom: 4px solid var(--border);
 }
 
 .header__icon {

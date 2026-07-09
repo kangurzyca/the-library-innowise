@@ -60,9 +60,11 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh; 
-  margin: 0;
+  margin: 0 auto;
+  min-width: 400px;
   position: relative;
   transition: 0.2s ease all;
+  max-width: 1200px;
 }
 main{
   flex: 1;
@@ -71,17 +73,64 @@ h1, h2, h3, h4 {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
 }
+.sidebar{
+ 
+  border: 2px magenta solid;
+  margin: 5px;
+  border-radius: 20px;
+ 
+}
+.sidebar__list{
+  border: 3px solid rgb(219, 197, 0);
+  border-radius: 20px;
+  margin: 5px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+}
 
+.books{
+  flex: 1;
+  border: 2px solid rgb(255, 187, 0);
+  border-radius: 20px;
 
+}
 .books__list {
-  display: flex;
-  border: 1px crimson solid;
-  flex-wrap: wrap;
+  display: grid;
+  border: 2px rgb(43, 220, 20) solid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  border-radius: 20px;
+
 }
 .books__message{
-  display: none;
+  display: block;
+  text-align:center;
+  margin: 50px 0;
+  font-size: 2rem;
+  color: var(--text);
+  font-weight: 200;
 }
+.content{
+  display: flex;
+  flex-direction: column;
+  border: 2px solid blue;
+  position: relative;
+}
+.content--empty{
+  border: 2px solid var(--brown);
+}
+@media (min-width:800px) {
+  .content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
 
+  .sidebar {
+    max-width: 250px;
+    align-self: flex-start;
+    max-height: 70vh;  
+    overflow-y: scroll;
+  }
+}
 
 
 
