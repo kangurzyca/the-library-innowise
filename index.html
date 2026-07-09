@@ -12,7 +12,7 @@
 
 <body>
   <header class="header">
-    <svg class="header__icon" viewBox="-7 -7 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg class="header__icon" aria-hidden="true" viewBox="-7 -7 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M12 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       <path
         d="M3 18C2.73478 18 2.48043 17.8946 2.29289 17.7071C2.10536 17.5196 2 17.2652 2 17V4C2 3.73478 2.10536 3.48043 2.29289 3.29289C2.48043 3.10536 2.73478 3 3 3H8C9.06087 3 10.0783 3.42143 10.8284 4.17157C11.5786 4.92172 12 5.93913 12 7C12 5.93913 12.4214 4.92172 13.1716 4.17157C13.9217 3.42143 14.9391 3 16 3H21C21.2652 3 21.5196 3.10536 21.7071 3.29289C21.8946 3.48043 22 3.73478 22 4V17C22 17.2652 21.8946 17.5196 21.7071 17.7071C21.5196 17.8946 21.2652 18 21 18H15C14.2044 18 13.4413 18.3161 12.8787 18.8787C12.3161 19.4413 12 20.2044 12 21C12 20.2044 11.6839 19.4413 11.1213 18.8787C10.5587 18.3161 9.79565 18 9 18H3Z"
@@ -22,7 +22,7 @@
       <h1 class="header__title">The Library</h1>
       <p class="header__subtitle">Discover your next favorite book</p>
     </div>
-    <button class="header__theme-button" type="button">dark</button>
+    <button class="header__theme-button" type="button" aria-label="Switch theme">dark</button>
   </header>
   <main>
     <section class="search">
@@ -30,35 +30,38 @@
       <p class="search__description">Search millions of books, build your personal library, and never lose track of what
         to read next.</p>
       <div class="search__form">
-        <svg class="search__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="search__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path
             d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z"
             stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
           <path d="M17.5 17.5L13.9166 13.9167" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round"
             stroke-linejoin="round" />
         </svg>
-        <input class="search__input" type="text" placeholder="Search for books by title or author...">
-        <button class="search__button button" type="button" disabled>Search</button>
+        <label class="visually-hidden" for="search">
+          Search books
+        </label>
+        <input class="search__input" id="search" type="text" placeholder="Search for books by title or author...">
+        <button class="search__button button" type="button" disabled aria-label="Search books">Search</button>
       </div>
     </section>
     <div class="content">
       <section class="books">
         <nav class="books__filters"></nav>
-        <p class="books__message" id="books__message">What books are on your mind today?</p>
+        <p class="books__message" id="books__message" aria-live="polite">What books are on your mind today?</p>
         <ul class="books__list">
         </ul>
       </section>
       <aside class="sidebar">
         <div class="sidebar__header-wrapper">
           <svg class="sidebar__icon" width="16" height="16" viewBox="-7 -6 30 30" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path
               d="M12.6667 9.33333C13.66 8.36 14.6667 7.19333 14.6667 5.66667C14.6667 4.69421 14.2804 3.76158 13.5928 3.07394C12.9051 2.38631 11.9725 2 11 2C9.82671 2 9.00004 2.33333 8.00004 3.33333C7.00004 2.33333 6.17337 2 5.00004 2C4.02758 2 3.09495 2.38631 2.40732 3.07394C1.71968 3.76158 1.33337 4.69421 1.33337 5.66667C1.33337 7.2 2.33337 8.36667 3.33337 9.33333L8.00004 14L12.6667 9.33333Z"
               stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           <div class="sidebar__content">
             <h2 class="sidebar__title">Favourites</h2>
-            <p class="sidebar__counter">No books saved</p>
+            <p class="sidebar__counter" aria-live="polite">No books saved</p>
           </div>
         </div>
         <ul class="sidebar__list">

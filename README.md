@@ -4,7 +4,10 @@ A responsive book search app built with **HTML**, **CSS**, and **JavaScript (ES6
 
 The app lets user search for books by title or authors. Selected books can be favorited and saved to browser's Local Storage. Saved books are kept by browser and available on each page load. For enhanced User Experience a UI theme switching is available.
 
-## Task
+App is deployed at:
+https://the-library-innowise.netlify.app/
+
+## TASK
 
 The Library project was created for recruitement purposes.
 
@@ -19,7 +22,7 @@ Link to full requirements document:
 https://drive.google.com/file/d/1swszcMU9rF_-zRJaA2VchPuU_d7yrAbs/view
 
 
-## How to run the app
+## HOW TO RUN THE APP
 
 ### local repositaory install
 

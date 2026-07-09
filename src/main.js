@@ -14,8 +14,6 @@ btnTheme.addEventListener("click", () => {
 const btnSearch = document.querySelector(".search__button");
 btnSearch.addEventListener("click", handleSearchBar);
 
-// declaring debounce variable for on-the-fly search
-let debounceTimeout;
 
 //selectind search bar input field and making it input sensitive to lock search button in case of no input
 //openLIbrary lock request for searches shorter than three characters
@@ -23,6 +21,9 @@ const searchBar = document.querySelector(".search__input");
 searchBar.addEventListener("input", (e) => {
   if (e.target.value.length > 2) {
     btnSearch.disabled = false;
+
+    // declaring debounce variable for on-the-fly search
+    let debounceTimeout;
     clearTimeout(debounceTimeout);
     debounceTimeout = setTimeout(() => {
       //remove filters created during previous search
@@ -31,7 +32,7 @@ searchBar.addEventListener("input", (e) => {
         .forEach((el) => el.remove());
 
       handleSearchBar();
-    }, 300);
+    }, 1000);
   } else {
     // added debouncer
     btnSearch.disabled = true;
@@ -158,7 +159,6 @@ function createBooksCards(booksArray, size) {
     }
 
     const favedClass = size ? "book-card__icon--faved" : "";
-          // <img class="book-card__icon ${favedClass}" src="./src/assets/heart.svg" alt="heart icon">
 
     booksList.innerHTML += `
        <li class="${bookCardClass}"
@@ -167,14 +167,14 @@ function createBooksCards(booksArray, size) {
        data-first_publish_year="${el.first_publish_year}"
        data-coverurl="${coverurl}">
           <div class="book-card__cover">
-            <img class="book-card__image" src="${coverurl}" alt="book cover">
+            <img class="book-card__image" src="${coverurl}" alt="cover of ${el.title}">
           </div>
           <div class="book-card__text-wrapper">
             <h3 class="book-card__title">${el.title}</h3>
             <p class="book-card__author">${author}</p>
             <p class="book-card__year">${el.first_publish_year}</p>
           </div>
-          <button class="book-card__fave-button">
+          <button class="book-card__fave-button"   aria-label="Add to favourites">
             <svg class="book-card__icon ${favedClass}" viewBox="-1 -1 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12.6667 9.33333C13.66 8.36 14.6667 7.19333 14.6667 5.66667C14.6667 4.69421 14.2804 3.76158 13.5928 3.07394C12.9051 2.38631 11.9725 2 11 2C9.82671 2 9.00004 2.33333 8.00004 3.33333C7.00004 2.33333 6.17337 2 5.00004 2C4.02758 2 3.09495 2.38631 2.40732 3.07394C1.71968 3.76158 1.33337 4.69421 1.33337 5.66667C1.33337 7.2 2.33337 8.36667 3.33337 9.33333L8.00004 14L12.6667 9.33333Z" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -201,9 +201,12 @@ function createBooksCards(booksArray, size) {
         book.author === li.dataset.author &&
         book.first_publish_year === li.dataset.first_publish_year
       ) {
+        // add a faved class
         li.querySelector(".book-card__icon").classList.add(
-          "book-card__icon--faved",
-        ); // add a faved class
+          "book-card__icon--faved")
+        // update aria label
+          li.querySelector(".book-card__fave-button").ariaLabel = "Remove form favorites"
+        
       }
     });
   });
@@ -243,6 +246,9 @@ function faveTheBook(e) {
       .querySelector(".book-card__icon")
       .classList.remove("book-card__icon--faved");
 
+    //updating aria label
+    e.target.ariaLabel = "add to favorites"
+
     // //unfortunately one has to search over books that are displayed in books__list to unfave them on the go
     const DisplayedFavedBooks = document.querySelectorAll(
       ".books__list .book-card",
@@ -256,6 +262,8 @@ function faveTheBook(e) {
         book
           .querySelector(".book-card__icon")
           .classList.remove("book-card__icon--faved");
+          //update aria
+        book.querySelector(".book-card__fave-button").ariaLabel = "Add to favorites"
       }
     });
     // // get iterate over them and check for data and unfave if needed.
@@ -264,6 +272,9 @@ function faveTheBook(e) {
     e.target
       .querySelector(".book-card__icon")
       .classList.add("book-card__icon--faved");
+      //update aria
+    e.target.ariaLabel = "remove from favorites"
+
   }
   //setting updated item in localStorage
   localStorage.setItem(itemName, JSON.stringify(myFavedBooks));
