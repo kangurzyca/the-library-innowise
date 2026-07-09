@@ -1,6 +1,9 @@
 .sidebar {
     margin: 5px;
     border-radius: 20px;
+    background-color: var(--card);
+    box-shadow: 5px 5px 20px 1px var(--shadow);
+
 }
 
 .sidebar__header-wrapper {
@@ -21,6 +24,7 @@
     background: var(--mint);
     color: var(--green);
     border-radius: 12px;
+    margin-left: 5px;
 }
 
 .sidebar__list {
@@ -31,21 +35,45 @@
 }
 
 .book-card--small {
-    border: 2px var(--border) solid;
+    border-radius: 0;
+    border-bottom: 2px var(--border) solid;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 0;
+    box-shadow: none;
 }
+
+.book-card--small:first-of-type {
+    border-top: 2px var(--border) solid;
+    padding-top: 15px;
+
+}
+
+.book-card--small:last-of-type {
+    border-bottom: none;
+}
+
 
 .book-card--small .book-card__text-wrapper {
     flex: 1;
 }
 
-.book-card--small .book-card__image {
+.book-card--small .book-card__cover {
     width: 80px;
     height: 120px;
-    border-radius: 5px;
-    margin-right: 10px;
+    background: var(--cover);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-right: 5px;
+}
+
+.book-card--small .book-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .book-card--small .book-card__title {

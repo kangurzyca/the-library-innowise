@@ -1,10 +1,11 @@
 .footer {
-  border-top: 4px solid var(--border);
+  border-top: 2px solid var(--border);
   height: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text);
+  margin-top: 20px;
 }
 
 .footer__link {

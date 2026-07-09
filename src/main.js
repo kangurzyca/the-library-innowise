@@ -23,14 +23,20 @@ const searchBar = document.querySelector(".search__input");
 searchBar.addEventListener("input", (e) => {
   if (e.target.value.length > 2) {
     btnSearch.disabled = false;
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+      //remove filters created during previous search
+      document
+        .querySelectorAll(".filters__author-filter")
+        .forEach((el) => el.remove());
+
+      handleSearchBar();
+    }, 300);
   } else {
+    // added debouncer
     btnSearch.disabled = true;
+    return;
   }
-  // added debouncer
-  clearTimeout(debounceTimeout);
-  debounceTimeout = setTimeout(() => {
-    handleSearchBar();
-  }, 300);
 });
 
 // getting a placeholder pargraph that serves as a state broadcaster
@@ -63,19 +69,19 @@ async function handleSearchBar() {
     }
     const data = await response.json();
 
-    //remove filters created during previous search
-    document
-      .querySelectorAll(".filters__author-filter")
-      .forEach((el) => el.remove());
+   
 
     if (data.docs.length === 0) {
       setLoading(false, "no books");
       return;
     }
+
     //create book-cards
     createBooksCards(data.docs);
     setLoading(false);
     searchBar.value = ""
+    //button should be disabled now
+    btnSearch.disabled = true;
   } catch (error) {
     setLoading(false);
     console.error("error fetching data", error);
@@ -85,7 +91,8 @@ async function handleSearchBar() {
 
 function createBooksCards(booksArray, size) {
   if (!booksArray || booksArray.length === 0) {
-    throw new Error("no books found");
+    document.querySelectorAll(".sidebar__list li").forEach(el=>el.remove())
+   return
   }
 
   let booksList = null;
@@ -98,7 +105,6 @@ function createBooksCards(booksArray, size) {
     bookCardClass = "book-card";
   }
 
-  booksList.innerHTML = `<li>loading books</li>`;
   booksList.innerHTML = ``;
   const bookCards = booksArray.map((el) => {
     // checking for data pieces to be falsey
@@ -125,7 +131,7 @@ function createBooksCards(booksArray, size) {
       }
       if (el.first_publish_year) {
         first_publish_year = el.first_publish_year;
-      } else {
+      } else{
         first_publish_year = "no year";
       }
     } else {
@@ -159,8 +165,10 @@ function createBooksCards(booksArray, size) {
        data-title="${el.title}" 
        data-author="${author}"
        data-first_publish_year="${el.first_publish_year}"
-       data-coverurl="https://covers.openlibrary.org/b/id/${el.cover_i}.jpg">
-          <img class="book-card__image" src="${coverurl}">
+       data-coverurl="${coverurl}">
+          <div class="book-card__cover">
+            <img class="book-card__image" src="${coverurl}" alt="book cover">
+          </div>
           <div class="book-card__text-wrapper">
             <h3 class="book-card__title">${el.title}</h3>
             <p class="book-card__author">${author}</p>
@@ -177,6 +185,10 @@ function createBooksCards(booksArray, size) {
   booksList
     .querySelectorAll(".book-card__fave-button")
     .forEach((el) => el.addEventListener("click", (e) => faveTheBook(e)));
+
+    // if books had no defined book cover then remove the image from the book-card cover
+    // div will be left acting as a book cover placeholder
+    booksList.querySelectorAll('img[src="no URL"]').forEach(el=>el.remove())
 
   // checking if fetched books contain already faved ones
   const favedBooks = readFavedBooks();
@@ -227,10 +239,32 @@ function faveTheBook(e) {
   //deciding whether to fave or not basing on findIndex return value => -1 if not found or actuall item index
   if (isAlreadyStored !== -1) {
     myFavedBooks.splice(isAlreadyStored, 1);
-    e.target.querySelector(".book-card__icon").classList.remove("book-card__icon--faved");
+    e.target
+      .querySelector(".book-card__icon")
+      .classList.remove("book-card__icon--faved");
+
+    // //unfortunately one has to search over books that are displayed in books__list to unfave them on the go
+    const DisplayedFavedBooks = document.querySelectorAll(
+      ".books__list .book-card",
+    );
+    DisplayedFavedBooks.forEach((book) => {
+      if (
+        book.dataset.title === newFavedBook.title &&
+        book.dataset.author === newFavedBook.author &&
+        book.dataset.first_publish_year === newFavedBook.first_publish_year
+      ) {
+        console.log(book);
+        book
+          .querySelector(".book-card__icon")
+          .classList.remove("book-card__icon--faved");
+      }
+    });
+    // // get iterate over them and check for data and unfave if needed.
   } else {
     myFavedBooks.push(newFavedBook);
-    e.target.querySelector(".book-card__icon").classList.add("book-card__icon--faved");
+    e.target
+      .querySelector(".book-card__icon")
+      .classList.add("book-card__icon--faved");
   }
   //setting updated item in localStorage
   localStorage.setItem(itemName, JSON.stringify(myFavedBooks));
@@ -363,11 +397,13 @@ function createAuthorFilters(hmtlCollectionArg) {
   });
 }
 function countFavorites(array){
-  const counter = document.querySelector(".subtitle__counter")
+  const counter = document.querySelector(".sidebar__counter")
     
     if(array.length === 0){
-      counter.textContent = "No"
+      counter.textContent = "No books saved"
+    }else  if(array.length === 1){
+      counter.textContent = "1 book saved"
     }else{
-     counter.textContent = array.length.toString()
+     counter.textContent = `${array.length.toString()} books saved`
     }
 }
