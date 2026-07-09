@@ -1,15 +1,11 @@
 .sidebar {
-
-    border: 2px magenta solid;
     margin: 5px;
     border-radius: 20px;
-
 }
 
 .sidebar__header-wrapper {
     display: flex;
     justify-content: left;
-    border: 3px maroon solid;
     border-radius: 10px;
     padding: 5px;
     align-items: center;
@@ -28,7 +24,6 @@
 }
 
 .sidebar__list {
-    border: 3px solid rgb(219, 197, 0);
     border-radius: 20px;
     margin: 5px;
     display: grid;

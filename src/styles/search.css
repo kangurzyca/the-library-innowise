@@ -22,7 +22,7 @@
   color: var(--title);
   font-size: 1.2rem;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-right: 1px;
   border: 2px solid var(--border);
   min-width: 200px;
   position: relative;
