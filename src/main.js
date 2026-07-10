@@ -14,6 +14,12 @@ btnTheme.addEventListener("click", () => {
 const btnSearch = document.querySelector(".search__button");
 btnSearch.addEventListener("click", handleSearchBar);
 
+//available books number
+let availableAmount = 0
+// query placeholder
+let searchQuery = null
+let queryOffset = 0
+
 // declaring debounce variable for on-the-fly search
 let debounceTimeout;
 
@@ -29,7 +35,7 @@ searchBar.addEventListener("input", (e) => {
       document
         .querySelectorAll(".filters__author-filter")
         .forEach((el) => el.remove());
-
+      
       handleSearchBar();
     }, 1000);
   } else {
@@ -46,14 +52,27 @@ const itemName = "theLibraryMyFavedBooks";
 //display faves in a sidebar if they exist
 createBooksCards(readFavedBooks(), "small");
 
-async function handleSearchBar() {
+async function handleSearchBar(queryArg) {
+  if (!queryArg) {
+    availableAmount = 0;
+    queryOffset = 0;
+    searchQuery = null;
+  }
   setLoading(true);
   try {
-    if (!searchBar.value) {
+    if (!searchBar.value && !queryArg) {
       throw new Error("No search phrase provided.");
     }
-    const query = searchBar.value.replaceAll(" ", "+"); // this unnecessary, openLibrary accepts something simpler, check it.
-    const url = `https://openlibrary.org/search.json?q=${query}&limit=9`;
+
+    // if moreButton is clicked then modified old query is passed and used in URL
+    let url = null;
+    if (queryArg) {
+      url = `https://openlibrary.org/search.json?q=${queryArg}`;
+    } else {
+      searchQuery = `${searchBar.value.replaceAll(" ", "+")}&limit=9`;
+      url = `https://openlibrary.org/search.json?q=${searchQuery}`;
+    }
+
     const headers = new Headers({
       "User-Agent": "TheLibrary/0.1",
     });
@@ -68,17 +87,23 @@ async function handleSearchBar() {
     }
     const data = await response.json();
 
-   
-
     if (data.docs.length === 0) {
       setLoading(false, "no books");
       return;
     }
+    availableAmount = data.numFound;
 
-    //create book-cards
-    createBooksCards(data.docs);
+    //create book-cards basing on new search vs offset search
+    if (queryArg) {
+      createBooksCards(data.docs, undefined, true);
+    } else {
+      createBooksCards(data.docs);
+    }
+    // for main books list adding filtering buttons
+    createAuthorFilters();
+
     setLoading(false);
-    searchBar.value = ""
+    searchBar.value = "";
     //button should be disabled now
     btnSearch.disabled = true;
   } catch (error) {
@@ -88,12 +113,45 @@ async function handleSearchBar() {
   }
 }
 
-function createBooksCards(booksArray, size) {
+function createMoreButton(searchPhrase) {
+  queryOffset += 9;
+  //create a search query
+  const newQuery = `${searchPhrase}&offset=${queryOffset}`;
+
+  //if queryOffset is bigger than availableAmount limit the ofset to the amount
+  if (queryOffset > availableAmount) {
+    queryOffset = availableAmount;
+  }
+
+  // early return if no more books to fetch
+  if (queryOffset >= availableAmount) {
+    return;
+  }
+
+  const booksList = document.querySelector(".books__list");
+  const moreButton = document.createElement("button");
+  moreButton.type = "button";
+  moreButton.textContent = "load more";
+  moreButton.ariaLabel = "load more books";
+  moreButton.addEventListener("click", () => {
+    // invoke handleSearch passing new query with an offset
+    handleSearchBar(newQuery);
+  });
+  moreButton.classList.add("list__button-more", "book-card");
+  booksList.appendChild(moreButton);
+}
+
+function createBooksCards(booksArray, size, addBooks) {
+
+  // early return if no books data available
   if (!booksArray || booksArray.length === 0) {
     document.querySelectorAll(".sidebar__list li").forEach(el=>el.remove())
    return
   }
 
+  // addMore button should be delted
+  document.querySelector(".list__button-more")?.remove()
+  // adding classes depending on where a book-card goes
   let booksList = null;
   let bookCardClass = null;
   if (size && size === "small") {
@@ -103,8 +161,10 @@ function createBooksCards(booksArray, size) {
     booksList = document.querySelector(".books__list");
     bookCardClass = "book-card";
   }
+  if(!addBooks){
+    booksList.querySelectorAll("li").forEach(li=>li.remove());
+  }
 
-  booksList.innerHTML = ``;
   const bookCards = booksArray.map((el) => {
     // checking for data pieces to be falsey
     // asdfasdf - returns a book with no author and breaks .join() below
@@ -209,11 +269,11 @@ function createBooksCards(booksArray, size) {
     });
   });
 
-  // for main books list adding filtering buttons
-  if (!size) {
-    createAuthorFilters(booksList.querySelectorAll("li"));
+
+  // create addMore button if there are more books
+  if(booksArray.length < availableAmount){
+    createMoreButton(searchQuery)
   }
-  //set height of sidebar
 }
 function faveTheBook(e) {
   // get faved books from localStorage
@@ -291,40 +351,64 @@ function readFavedBooks() {
 
 // laoding state function
 function setLoading(isLoading, type) {
+  const moreButton = document.querySelector(".list__button-more");
+
   if (isLoading) {
-    //delete current booksList if a new search is called
-    document.querySelector(".books__list").innerHTML = "";
     //show a booksMessage message
     booksMessage.style.display = "block";
     booksMessage.textContent = "Loading books, please wait.";
     btnSearch.disabled = true;
+    if (moreButton) {
+      moreButton.disabled = true;
+      moreButton.textContent = "loading...";
+    }
   } else if (!isLoading && !type) {
     //hide loading message
     booksMessage.style.display = "none";
     btnSearch.disabled = false;
+    if (moreButton) {
+      moreButton.disabled = false;
+      moreButton.textContent = "load more";
+    }
   } else if (!isLoading && type === "no books") {
     booksMessage.style.display = "block";
     booksMessage.textContent =
       "No books found, try searching for something else.";
     btnSearch.disabled = false;
+    if (moreButton) {
+      moreButton.disabled = false;
+      moreButton.textContent = "load more";
+    }
   } else if (!isLoading && type === "network") {
     booksMessage.style.display = "block";
     booksMessage.textContent =
       "Search failed due to network error, please try again.";
     btnSearch.disabled = false;
+    if (moreButton) {
+      moreButton.textContent = "load more";
+      moreButton.disabled = false;
+    }
   }
 }
 
 //to filter by author lets gather all displayed authors and create buttons with their names
 // once button is clicked all book-cards are hidden except those that realte to the clicked button
-function createAuthorFilters(hmtlCollectionArg) {
+function createAuthorFilters() {
+
+  document
+        .querySelectorAll(".filters__author-filter")
+        .forEach((el) => el.remove());
+
+  const booksList = document.querySelectorAll(".books__list li")
+
   //return if empty or undefined
-  if (!hmtlCollectionArg || Array.from(hmtlCollectionArg).length === 0) {
+  if (!booksList || Array.from(booksList).length === 0) {
     console.log("no filters created due to no books available");
     return;
   }
+
   //make an array from querySelectorAll output
-  const booksArray = Array.from(hmtlCollectionArg);
+  const booksArray = Array.from(booksList);
 
   //get filters block
   const filtersBlock = document.querySelector(".books__filters");

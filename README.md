@@ -51,6 +51,8 @@ Open Library limits search request to minimum three characters. The app won't re
 
 For user's convinience On-The-Fly is implemented. After satisfying the three characters requirements app will request search on it's own. User doesn't have to click the Search button.
 
+Application obtains nine books at a time. Whenever user feels like getting more books for last search a Load More Button is available at the bottom of the Books List. If Button is not displayed then no more books are available for the last search.
+
 #### Books List
 
 When user requests a search they observe Loading State message. When search resolves successfuly obtained books data is orginised and displayed on the screen in form of Book Cards. 
@@ -92,6 +94,7 @@ index.html      => App entru point
 ## Error handling
 
 - Loading state displayed on screen
+- Loading state disables load/search buttons
 - Empty input validation and search prevention
 - Incorrect (too short) request prevention
 - No results state displayed on screen

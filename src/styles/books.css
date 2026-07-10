@@ -8,6 +8,27 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
+.list__button-more{
+  color: var(--green);
+  background-color: var(--mint);
+   font-family: 'Source Sans 3', sans-serif;
+  font-size: 1.5rem;
+  border: none;
+  transition: all ease .2s;
+  min-height: 440px;
+}
+.list__button-more:not(:disabled):hover{
+  cursor: pointer;
+  font-size: 1.6rem;
+}
+.list__button-more:not(:disabled):active{
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+.list__button-more:disabled{
+  background-color: var(--shadow);
+}
+
+
 .books__message {
   display: block;
   text-align: center;
