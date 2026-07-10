@@ -43,6 +43,8 @@ npm run build
 
 In the header of the app there is a UI theme switch provided. App loads in light theme, user can change theme to dark and back by clicking the switch.
 
+Theme style is saved in a browser and reloaded on page load for convenience.
+
 #### Search
 
 The app allows user to search book using keywords. Open Library uses keywords to return books with matched authors and titles. User provided key words won't be used to search over books contents.

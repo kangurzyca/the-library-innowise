@@ -1,24 +1,20 @@
-// wiring up theme button
+//get theme button
 const btnTheme = document.querySelector(".header__theme-button");
-btnTheme.addEventListener("click", () => {
-  if (btnTheme.textContent === "dark") {
-    document.querySelector("body").classList.add("theme-dark");
-    btnTheme.textContent = "light";
-  } else {
-    document.querySelector("body").classList.remove("theme-dark");
-    btnTheme.textContent = "dark";
-  }
-});
+const themeName = "theLibrarySelectedTheme";
+
+btnTheme.addEventListener("click", ()=>setTheme(true));
+//set theme basing on localstorage or default
+setTheme()
 
 // selecting the seartch button
 const btnSearch = document.querySelector(".search__button");
 btnSearch.addEventListener("click", handleSearchBar);
 
 //available books number
-let availableAmount = 0
+let availableAmount = 0;
 // query placeholder
-let searchQuery = null
-let queryOffset = 0
+let searchQuery = null;
+let queryOffset = 0;
 
 // declaring debounce variable for on-the-fly search
 let debounceTimeout;
@@ -35,7 +31,7 @@ searchBar.addEventListener("input", (e) => {
       document
         .querySelectorAll(".filters__author-filter")
         .forEach((el) => el.remove());
-      
+
       handleSearchBar();
     }, 1000);
   } else {
@@ -113,44 +109,16 @@ async function handleSearchBar(queryArg) {
   }
 }
 
-function createMoreButton(searchPhrase) {
-  queryOffset += 9;
-  //create a search query
-  const newQuery = `${searchPhrase}&offset=${queryOffset}`;
 
-  //if queryOffset is bigger than availableAmount limit the ofset to the amount
-  if (queryOffset > availableAmount) {
-    queryOffset = availableAmount;
-  }
-
-  // early return if no more books to fetch
-  if (queryOffset >= availableAmount) {
+function createBooksCards(booksArray, size, addBooks) {
+  // early return if no books data available
+  if (!booksArray || booksArray.length === 0) {
+    document.querySelectorAll(".sidebar__list li").forEach((el) => el.remove());
     return;
   }
 
-  const booksList = document.querySelector(".books__list");
-  const moreButton = document.createElement("button");
-  moreButton.type = "button";
-  moreButton.textContent = "load more";
-  moreButton.ariaLabel = "load more books";
-  moreButton.addEventListener("click", () => {
-    // invoke handleSearch passing new query with an offset
-    handleSearchBar(newQuery);
-  });
-  moreButton.classList.add("list__button-more", "book-card");
-  booksList.appendChild(moreButton);
-}
-
-function createBooksCards(booksArray, size, addBooks) {
-
-  // early return if no books data available
-  if (!booksArray || booksArray.length === 0) {
-    document.querySelectorAll(".sidebar__list li").forEach(el=>el.remove())
-   return
-  }
-
   // addMore button should be delted
-  document.querySelector(".list__button-more")?.remove()
+  document.querySelector(".list__button-more")?.remove();
   // adding classes depending on where a book-card goes
   let booksList = null;
   let bookCardClass = null;
@@ -161,8 +129,8 @@ function createBooksCards(booksArray, size, addBooks) {
     booksList = document.querySelector(".books__list");
     bookCardClass = "book-card";
   }
-  if(!addBooks){
-    booksList.querySelectorAll("li").forEach(li=>li.remove());
+  if (!addBooks) {
+    booksList.querySelectorAll("li").forEach((li) => li.remove());
   }
 
   const bookCards = booksArray.map((el) => {
@@ -190,7 +158,7 @@ function createBooksCards(booksArray, size, addBooks) {
       }
       if (el.first_publish_year) {
         first_publish_year = el.first_publish_year;
-      } else{
+      } else {
         first_publish_year = "no year";
       }
     } else {
@@ -244,9 +212,9 @@ function createBooksCards(booksArray, size, addBooks) {
     .querySelectorAll(".book-card__fave-button")
     .forEach((el) => el.addEventListener("click", (e) => faveTheBook(e)));
 
-    // if books had no defined book cover then remove the image from the book-card cover
-    // div will be left acting as a book cover placeholder
-    booksList.querySelectorAll('img[src="no URL"]').forEach(el=>el.remove())
+  // if books had no defined book cover then remove the image from the book-card cover
+  // div will be left acting as a book cover placeholder
+  booksList.querySelectorAll('img[src="no URL"]').forEach((el) => el.remove());
 
   // checking if fetched books contain already faved ones
   const favedBooks = readFavedBooks();
@@ -261,18 +229,18 @@ function createBooksCards(booksArray, size, addBooks) {
       ) {
         // add a faved class
         li.querySelector(".book-card__icon").classList.add(
-          "book-card__icon--faved")
+          "book-card__icon--faved",
+        );
         // update aria label
-          li.querySelector(".book-card__fave-button").ariaLabel = "Remove form favorites"
-        
+        li.querySelector(".book-card__fave-button").ariaLabel =
+          "Remove form favorites";
       }
     });
   });
 
-
   // create addMore button if there are more books
-  if(booksArray.length < availableAmount){
-    createMoreButton(searchQuery)
+  if (booksArray.length < availableAmount) {
+    createMoreButton(searchQuery);
   }
 }
 function faveTheBook(e) {
@@ -305,7 +273,7 @@ function faveTheBook(e) {
       .classList.remove("book-card__icon--faved");
 
     //updating aria label
-    e.target.ariaLabel = "add to favorites"
+    e.target.ariaLabel = "add to favorites";
 
     // //unfortunately one has to search over books that are displayed in books__list to unfave them on the go
     const DisplayedFavedBooks = document.querySelectorAll(
@@ -320,8 +288,9 @@ function faveTheBook(e) {
         book
           .querySelector(".book-card__icon")
           .classList.remove("book-card__icon--faved");
-          //update aria
-        book.querySelector(".book-card__fave-button").ariaLabel = "Add to favorites"
+        //update aria
+        book.querySelector(".book-card__fave-button").ariaLabel =
+          "Add to favorites";
       }
     });
     // // get iterate over them and check for data and unfave if needed.
@@ -330,9 +299,8 @@ function faveTheBook(e) {
     e.target
       .querySelector(".book-card__icon")
       .classList.add("book-card__icon--faved");
-      //update aria
-    e.target.ariaLabel = "remove from favorites"
-
+    //update aria
+    e.target.ariaLabel = "remove from favorites";
   }
   //setting updated item in localStorage
   localStorage.setItem(itemName, JSON.stringify(myFavedBooks));
@@ -345,7 +313,7 @@ function readFavedBooks() {
   if (localStorage.getItem(itemName)) {
     myFavedBooks = [...JSON.parse(localStorage.getItem(itemName))];
   }
-  countFavorites(myFavedBooks)
+  countFavorites(myFavedBooks);
   return myFavedBooks;
 }
 
@@ -394,12 +362,11 @@ function setLoading(isLoading, type) {
 //to filter by author lets gather all displayed authors and create buttons with their names
 // once button is clicked all book-cards are hidden except those that realte to the clicked button
 function createAuthorFilters() {
-
   document
-        .querySelectorAll(".filters__author-filter")
-        .forEach((el) => el.remove());
+    .querySelectorAll(".filters__author-filter")
+    .forEach((el) => el.remove());
 
-  const booksList = document.querySelectorAll(".books__list li")
+  const booksList = document.querySelectorAll(".books__list li");
 
   //return if empty or undefined
   if (!booksList || Array.from(booksList).length === 0) {
@@ -488,14 +455,67 @@ function createAuthorFilters() {
     filtersBlock.appendChild(button);
   });
 }
-function countFavorites(array){
-  const counter = document.querySelector(".sidebar__counter")
-    
-    if(array.length === 0){
-      counter.textContent = "No books saved"
-    }else  if(array.length === 1){
-      counter.textContent = "1 book saved"
-    }else{
-     counter.textContent = `${array.length.toString()} books saved`
+function countFavorites(array) {
+  const counter = document.querySelector(".sidebar__counter");
+
+  if (array.length === 0) {
+    counter.textContent = "No books saved";
+  } else if (array.length === 1) {
+    counter.textContent = "1 book saved";
+  } else {
+    counter.textContent = `${array.length.toString()} books saved`;
+  }
+}
+function createMoreButton(searchPhrase) {
+  queryOffset += 9;
+  //create a search query
+  const newQuery = `${searchPhrase}&offset=${queryOffset}`;
+
+  //if queryOffset is bigger than availableAmount limit the ofset to the amount
+  if (queryOffset > availableAmount) {
+    queryOffset = availableAmount;
+  }
+
+  // early return if no more books to fetch
+  if (queryOffset >= availableAmount) {
+    return;
+  }
+
+  const booksList = document.querySelector(".books__list");
+  const moreButton = document.createElement("button");
+  moreButton.type = "button";
+  moreButton.textContent = "load more";
+  moreButton.ariaLabel = "load more books";
+  moreButton.addEventListener("click", () => {
+    // invoke handleSearch passing new query with an offset
+    handleSearchBar(newQuery);
+  });
+  moreButton.classList.add("list__button-more", "book-card");
+  booksList.appendChild(moreButton);
+}
+
+function setTheme(toggle = false) {
+
+    // getting saved theme from local storage or if undefined then set the default value
+    let myTheme = JSON.parse(localStorage.getItem(themeName)) || "light";
+
+    // if toggled via eventListener then switch themes
+    if (toggle) {
+      if(myTheme === "light"){
+      myTheme = "dark"
+      }else{
+      myTheme = "light"
+      }
     }
+
+    //lastly set the theme
+    if (myTheme === "dark") {
+        document.body.classList.add("theme-dark");
+        btnTheme.textContent = "light";
+    } else {
+        document.body.classList.remove("theme-dark");
+        btnTheme.textContent = "dark";
+    }
+    // set/update the item in local storage
+    localStorage.setItem(themeName, JSON.stringify(myTheme));
 }
