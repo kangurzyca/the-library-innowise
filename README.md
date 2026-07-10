@@ -79,8 +79,8 @@ On the very bottom of the page there is a link to Open Library allowing to visit
 
 ## Project Structure
 
-```Folder and file structure overview:
-
+Folder and file structure overview:
+```
 src/
 ├── assets/     => Icons
 ├── styles/     => Components styles
