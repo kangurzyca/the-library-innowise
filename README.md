@@ -25,7 +25,7 @@ https://drive.google.com/file/d/1swszcMU9rF_-zRJaA2VchPuU_d7yrAbs/view
 ## HOW TO RUN THE APP
 
 ### Local repository install
-
+```
 1. install dependencies:
 npm install
 
@@ -36,6 +36,7 @@ npm run dev
 npm run build
 
 4. The production files will be available in the /dist folder.
+```
 
 ### User Intarface overview
 
