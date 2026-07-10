@@ -24,7 +24,7 @@ https://drive.google.com/file/d/1swszcMU9rF_-zRJaA2VchPuU_d7yrAbs/view
 
 ## HOW TO RUN THE APP
 
-### local repositaory install
+### Local repository install
 
 1. install dependencies:
 npm install
@@ -77,18 +77,19 @@ User can remove books from Favorite List by clicking on a Heart Icon placed on t
 On the very bottom of the page there is a link to Open Library allowing to visit the data source feeding The Library application.
 
 
-### Project Structure
+## Project Structure
 
 Folder and file structure overview:
+
 src/
-    assets/ => Icons
-    styles/ => Components styles
-    main.js => App logic
-    style.css => Main CSS merging other styles
-index.html => App entru point
+├── assets/     => Icons
+├── styles/     => Components styles
+├── main.js     => App logic
+├── style.css   => Main CSS merging other styles
+└── index.html  => App entru point
 
 
-### Error handling
+## Error handling
 
 - Loading state displayed on screen
 - Empty input validation and search prevention

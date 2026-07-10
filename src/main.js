@@ -14,6 +14,8 @@ btnTheme.addEventListener("click", () => {
 const btnSearch = document.querySelector(".search__button");
 btnSearch.addEventListener("click", handleSearchBar);
 
+// declaring debounce variable for on-the-fly search
+let debounceTimeout;
 
 //selectind search bar input field and making it input sensitive to lock search button in case of no input
 //openLIbrary lock request for searches shorter than three characters
@@ -21,9 +23,6 @@ const searchBar = document.querySelector(".search__input");
 searchBar.addEventListener("input", (e) => {
   if (e.target.value.length > 2) {
     btnSearch.disabled = false;
-
-    // declaring debounce variable for on-the-fly search
-    let debounceTimeout;
     clearTimeout(debounceTimeout);
     debounceTimeout = setTimeout(() => {
       //remove filters created during previous search
@@ -53,8 +52,8 @@ async function handleSearchBar() {
     if (!searchBar.value) {
       throw new Error("No search phrase provided.");
     }
-    const query = searchBar.value.replaceAll(" ", "%20"); // this unnecessary, openLibrary accepts something simpler, check it.
-    const url = `https://openlibrary.org/search.json?q=${query}&limit=15`;
+    const query = searchBar.value.replaceAll(" ", "+"); // this unnecessary, openLibrary accepts something simpler, check it.
+    const url = `https://openlibrary.org/search.json?q=${query}&limit=9`;
     const headers = new Headers({
       "User-Agent": "TheLibrary/0.1",
     });
@@ -62,7 +61,6 @@ async function handleSearchBar() {
       method: "GET",
       headers: headers,
     };
-
     const response = await fetch(url, options);
     if (!response.ok) {
       setLoading(false, "network");
