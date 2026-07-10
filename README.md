@@ -79,15 +79,15 @@ On the very bottom of the page there is a link to Open Library allowing to visit
 
 ## Project Structure
 
-Folder and file structure overview:
+```Folder and file structure overview:
 
 src/
 ├── assets/     => Icons
 ├── styles/     => Components styles
 ├── main.js     => App logic
 ├── style.css   => Main CSS merging other styles
-└── index.html  => App entru point
-
+index.html      => App entru point
+```
 
 ## Error handling
 
